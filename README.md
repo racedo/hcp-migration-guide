@@ -69,10 +69,19 @@ This guide uses the **[Certificate Discovery Application](https://github.com/rac
 
 Migrating to HCP provides significant infrastructure savings:
 
-| Architecture | Nodes Required | Savings |
-|--------------|----------------|---------|
-| 10 Standalone clusters (6 nodes each) | 60 nodes | Baseline |
-| HCP (1 management + 10 HCP with 2 workers each) | 26 nodes | **57% reduction** |
+**Control Plane Pod Density:**
+- Each hosted control plane: ~75 pods
+- Max pods per node: 500
+- Hosted control planes per management node: ~6
+
+| Architecture | Nodes Required | Calculation | Savings |
+|--------------|----------------|-------------|---------|
+| 10 Standalone clusters (6 nodes each) | 60 nodes | 10 × 6 = 60 | Baseline |
+| HCP (3 mgmt + 10 HCP × 2 workers) | 23 nodes | 3 + (10 × 2) = 23 | **62% reduction** |
+
+**HCP Breakdown:**
+- Management cluster: 3 nodes (hosts 10 control planes at ~6 per node, HA configured)
+- Worker nodes: 20 nodes (10 HCP clusters × 2 workers each)
 
 ## Prerequisites
 
