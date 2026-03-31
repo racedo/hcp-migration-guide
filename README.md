@@ -97,7 +97,8 @@ Migrating to HCP provides significant infrastructure savings:
 
 - **[OpenShift 4.21 Backup and Restore](https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html/backup_and_restore/)** - Official OADP documentation
 - **[OADP Operator](https://docs.openshift.com/container-platform/4.21/backup_and_restore/application_backup_and_restore/oadp-intro.html)** - Installing and configuring OADP
-- **[HyperShift Documentation](https://hypershift-docs.netlify.app/)** - Hosted Control Planes documentation
+- **[Hosted Control Planes](https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html/hosted_control_planes/index)** - Official HCP documentation
+- **[HyperShift Documentation](https://hypershift-docs.netlify.app/)** - Upstream HyperShift project
 - **[Velero Documentation](https://velero.io/docs/)** - Upstream Velero project
 - **[Certificate Discovery App](https://github.com/racedo/openshift-certificate-analyzer)** - Example application repository
 
