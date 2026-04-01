@@ -1115,14 +1115,14 @@ oc run test-curl --image=curlimages/curl --rm -it --restart=Never -- \
 ### HyperShift Plugin: When Do You Need It?
 
 **You DO NOT need the HyperShift plugin for:**
-- ✅ Migrating applications between clusters (this guide)
-- ✅ Backing up workloads running on HCP data plane
-- ✅ Standard backup/restore of user namespaces
+- Migrating applications between clusters (this guide)
+- Backing up workloads running on HCP data plane
+- Standard backup/restore of user namespaces
 
 **You DO need the HyperShift plugin for:**
-- ❌ Backing up the hosted cluster's control plane (HostedCluster, HostedControlPlane resources)
-- ❌ Disaster recovery of the hosted cluster infrastructure itself
-- ❌ Control plane backup/restore operations on the management cluster
+- Backing up the hosted cluster's control plane (HostedCluster, HostedControlPlane resources)
+- Disaster recovery of the hosted cluster infrastructure itself
+- Control plane backup/restore operations on the management cluster
 
 **Our Approach:** This guide installs OADP on both source and target clusters directly, treating the HCP cluster like any other OpenShift cluster for workload migration purposes.
 
