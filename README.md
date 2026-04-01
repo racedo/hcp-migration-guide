@@ -159,7 +159,5 @@ This guide is based on real-world migration experience. If you have suggestions 
 
 ---
 
-**Author:** Red Hat Partner Engineering
+**Author:** Ramon Acedo
 **Date:** March 2026
-**Environment:** pm-cluster → bm-hosted-cluster (Bare Metal HCP)
-**Documentation Version:** Aligned with OpenShift 4.21
