@@ -30,6 +30,53 @@ This guide is fully aligned with the **[OpenShift Container Platform 4.21 Backup
 - Infrastructure: Bare metal
 - Nodes: 2 worker nodes
 
+## Architecture Overview
+
+**Migration Flow:**
+```
+Source: pm-cluster (Standalone)              Target: bm-hosted-cluster (HCP)
+├── OADP installed                           │
+├── cert-discovery-app                       ├── OADP installed
+│   ├── Deployment                           │
+│   ├── Service                              │
+│   ├── Route                                │
+│   ├── PVC (10Gi, 210MB DB)                 │
+│   └── ServiceAccount                       │
+│                                            │
+├── Cluster-scoped RBAC                      │
+│   ├── ClusterRole ────────────────┐        │
+│   └── ClusterRoleBinding ─────────┼─┐      │
+│                                   │ │      │
+├── Export RBAC (manual) ───────────┘ │      │
+│                                     │      │
+├── Create Backup ──────┐             │      │
+│                       │             │      │
+│                       ▼             │      │
+│                  AWS S3 Bucket      │      │
+│                  (eu-north-1)       │      │
+│                       │             │      │
+│                       │             └──────┼──▶ Apply RBAC first (manual)
+│                       │                    │
+│                       └────────────────────┼──▶ Restore (namespace-scoped)
+│                                            │
+└────────────────────────────────────────────┼── cert-discovery-app
+                                             │   ├── Deployment
+                                             │   ├── Service
+                                             │   ├── Route
+                                             │   ├── PVC (10Gi, DB restored)
+                                             │   └── ServiceAccount
+                                             │
+                                             └── Cluster-scoped RBAC
+                                                 ├── ClusterRole
+                                                 └── ClusterRoleBinding
+```
+
+**Key Points:**
+- **Workload migration**, not control plane backup - OADP installed on both clusters directly
+- **HyperShift plugin not needed** for this use case
+- **RBAC requires manual handling** - OADP namespace backups don't include cluster-scoped resources
+- **Two-step process**: Apply cluster-scoped RBAC first → Then restore namespace-scoped resources
+
 ## What You'll Learn
 
 1. **OADP Setup:** Install and configure OADP on both standalone and HCP clusters
