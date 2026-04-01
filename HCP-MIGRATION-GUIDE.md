@@ -1006,7 +1006,7 @@ echo "Application URL: http://$ROUTE"
 
 ### Remove Application from Source Cluster
 
-**⚠️ Only after confirming target cluster is working correctly!**
+**Only after confirming target cluster is working correctly!**
 
 ```bash
 export KUBECONFIG=~/kubeconfig-pm-cluster
