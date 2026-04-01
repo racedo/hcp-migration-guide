@@ -1162,40 +1162,7 @@ oc run test-curl --image=curlimages/curl --rm -it --restart=Never -- \
 
 ---
 
-## Additional Resources
-
-### Official Documentation
-
-- **[OpenShift 4.21 Backup and Restore](https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html/backup_and_restore/)** - Official OADP documentation
-- **[OADP Operator](https://docs.openshift.com/container-platform/4.21/backup_and_restore/application_backup_and_restore/oadp-intro.html)** - Installing and configuring OADP
-- **[Hosted Control Planes](https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html/hosted_control_planes/index)** - Official HCP documentation
-- **[HyperShift Documentation](https://hypershift-docs.netlify.app/)** - Upstream HyperShift project
-- **[Velero Documentation](https://velero.io/docs/)** - Upstream Velero project
-
-### Application Resources
-
-- **[Certificate Discovery App](https://github.com/racedo/openshift-certificate-analyzer)** - GitHub repository
-- **Migration Blog Content** - `/Migration-Blog-Content/` directory in this repository
-
-### Version Compatibility
-
-This guide is aligned with:
-- **OpenShift Container Platform:** 4.21
-- **OADP Operator:** 1.5.5
-- **Velero:** 1.14
-- **Kopia:** Default uploader in OADP 1.3+
-
-**API Versions Used:**
-- DataProtectionApplication: `oadp.openshift.io/v1alpha1`
-- Backup/Restore: `velero.io/v1`
-
----
-
 ## Notes
-
-**Compliance with Official Documentation:**
-
-This migration guide follows the official OpenShift Container Platform 4.21 Backup and Restore documentation. All procedures, API versions, command formats, and field names are consistent with Red Hat's official OADP documentation.
 
 **Key Differences from Cloud Migrations:**
 - Uses bare metal infrastructure instead of cloud providers
