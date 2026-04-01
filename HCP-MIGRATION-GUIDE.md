@@ -90,6 +90,61 @@ ls -lh /tmp/cluster*.yaml
 - OADP backup with `includedNamespaces: [cert-discovery-app]` only backs up namespace-scoped resources
 - Without these permissions, the application will fail with "403 Forbidden" errors
 
+---
+
+**Alternative: Automated RBAC Backup (Optional)**
+
+Instead of manually exporting RBAC resources, you can include them in the OADP backup by labeling them first and using `includedClusterScopedResources` in the Backup spec.
+
+**Step 1: Label the cluster-scoped RBAC resources**
+
+```bash
+export KUBECONFIG=~/kubeconfig-pm-cluster
+
+# Add app label to ClusterRole
+oc label clusterrole cert-discovery-role app=cert-discovery
+
+# Add app label to ClusterRoleBinding
+oc label clusterrolebinding cert-discovery-binding app=cert-discovery
+
+# Verify labels were added
+oc get clusterrole cert-discovery-role --show-labels
+oc get clusterrolebinding cert-discovery-binding --show-labels
+```
+
+**Step 2: Modify the Backup spec in Step 4**
+
+When creating the backup, use this modified spec instead:
+
+```yaml
+apiVersion: velero.io/v1
+kind: Backup
+metadata:
+  name: cert-discovery-app-backup
+  namespace: openshift-adp
+spec:
+  includedNamespaces:
+    - cert-discovery-app
+  includedClusterScopedResources:
+    - clusterroles
+    - clusterrolebindings
+  labelSelector:
+    matchLabels:
+      app: cert-discovery
+  storageLocation: default
+  ttl: 720h0m0s
+  defaultVolumesToFsBackup: true
+```
+
+**Benefits:**
+- RBAC resources are automatically included in the backup
+- No manual export/apply steps needed
+- RBAC resources are restored automatically with the Restore CR
+
+**Note:** If using this approach, you can skip Step 7 (Apply Cluster-Scoped RBAC) as it will be handled automatically during restore.
+
+---
+
 ### 3. S3 Storage
 - AWS S3 bucket: `cert-discovery-management-app`
 - Region: `eu-north-1`
@@ -448,6 +503,8 @@ EOF
 
 **Important:** Setting `defaultVolumesToFsBackup: true` is required to back up persistent volumes using File System Backup (FSB). Without this, only Kubernetes resources are backed up and the SQLite database will be lost.
 
+**Note:** If you're using the **Alternative: Automated RBAC Backup** approach from Prerequisites, use the modified Backup spec shown in that section instead. It includes `includedClusterScopedResources` and `labelSelector` to automatically backup ClusterRole and ClusterRoleBinding.
+
 ### 4.2 Monitor Backup Progress
 
 ```bash
@@ -723,6 +780,8 @@ default   Available   10s              75s   true
 
 ## Step 7: Apply Cluster-Scoped RBAC
 
+**Note:** If you used the **Alternative: Automated RBAC Backup** approach from Prerequisites, you can **skip this step**. The ClusterRole and ClusterRoleBinding will be restored automatically in Step 8.
+
 The ClusterRole and ClusterRoleBinding are cluster-scoped resources that were not included in the namespace backup. Apply these BEFORE restoring so the application pods have permissions when they start.
 
 Apply the YAML files you exported in the Prerequisites section.
@@ -783,7 +842,7 @@ Create a `Restore` custom resource to restore the application.
 - Backup must be in `Completed` state
 - OADP is installed and configured on the hosted cluster
 - Backup is visible in `oc get backups -n openshift-adp`
-- Cluster-scoped RBAC has been applied (Step 7)
+- Cluster-scoped RBAC has been applied (Step 7) OR included in backup via alternative approach
 
 ```bash
 export KUBECONFIG=~/kubeconfig-bm-hosted-cluster
