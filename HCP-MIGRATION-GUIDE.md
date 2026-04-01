@@ -1202,11 +1202,6 @@ This migration guide follows the official OpenShift Container Platform 4.21 Back
 - Both source and target are on-premises clusters
 - HyperShift on bare metal (not AWS ROSA or Azure ARO)
 
-**HyperShift Plugin Clarification:**
-- This guide does NOT use the HyperShift plugin because we're migrating workloads, not backing up control planes
-- The HyperShift plugin is only needed for backing up HostedCluster/HostedControlPlane resources (control plane disaster recovery)
-- For application migration to HCP clusters, install OADP directly on the hosted cluster using standard procedures
-
 **Production Considerations:**
 - Test this procedure in a non-production environment first
 - Ensure you have sufficient S3 storage for backup data
